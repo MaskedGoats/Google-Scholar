@@ -1,0 +1,20 @@
+from scholarly import ProxyGenerator, scholarly
+
+# Set up proxy generator
+pg = ProxyGenerator()
+
+scholarly.use_proxy(pg) # use proxy on scholarly
+
+# Perform a search query
+search_query = scholarly.search_author('Opthamology')
+for i in range(5):
+    author = next(search_query, None)
+    if author:
+        # Print the author's details
+        print("Author:", author['name'])
+        print("Affiliation:", author['affiliation'])
+        print("Email Domain:", author['email_domain'])
+        print("Interests:", author['interests'])
+        print("Cited By:", author['citedby'])
+    else:
+        print("No author found for this search query.")
