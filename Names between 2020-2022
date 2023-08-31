@@ -1,0 +1,27 @@
+from scholarly import ProxyGenerator, scholarly
+
+# Set up proxy generator
+pg = ProxyGenerator()
+
+scholarly.use_proxy(pg) # use proxy on scholarly
+
+# Perform a search query
+search_query = scholarly.search_author('ophthalmology after:2020 before:2023')
+
+author_names = []
+for i in range(5):
+    author = next(search_query, None)
+    if author:
+        first_name = author['name'].split()[0]
+        last_name = author['name'].split()[-1]
+        full_name = f"{first_name} {last_name}"
+        author_names.append(full_name)
+    else:
+        print("No more authors found for this search query.")
+        break
+
+# Print the list of author names
+print(author_names)
+
+
+
