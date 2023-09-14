@@ -1,0 +1,43 @@
+from scholarly import scholarly
+from scholarly import ProxyGenerator
+import csv
+
+# Set up proxy generator
+pg = ProxyGenerator()
+pg.FreeProxies()
+
+scholarly.use_proxy(pg) # use proxy on scholarly
+
+# Perform a search query
+search_query = scholarly.search_author('ophthalmology after:2020-01-01 before:2023-05-11')
+
+author_names = []
+for i in range(2500):
+    author = next(search_query, None)
+    if author:
+        first_name = author['name'].split()[0]
+        last_name = author['name'].split()[-1]
+        author_names.append({"first_name": first_name, "last_name": last_name})
+    else:
+        print("No more authors found for this search query.")
+        break
+    
+file_name = "names.csv"
+
+# Open the CSV file in write mode
+with open(file_name, mode='w', newline='') as file:
+    fieldnames = ["First Name", "Last Name"]
+    writer = csv.DictWriter(file, fieldnames=fieldnames)
+    
+    # Write the header row
+    writer.writeheader()
+    
+    # Write the data rows
+    for author_name in author_names:
+        writer.writerow({"First Name": author_name["first_name"], "Last Name": author_name["last_name"]})
+
+print(f"Data has been written to {file_name}")
+
+
+
+
